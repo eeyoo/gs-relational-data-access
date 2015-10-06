@@ -28,8 +28,9 @@ public class Application implements CommandLineRunner {
     public void run(String... strings) throws Exception {
 
         log.info("Creating tables");
+        log.info("=====================================================");
 
-        jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
+        /*jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE customers(" +
                 "id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
 
@@ -48,6 +49,6 @@ public class Application implements CommandLineRunner {
         jdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[] { "Josh" },
                 (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
-        ).forEach(customer -> log.info(customer.toString()));
+        ).forEach(customer -> log.info(customer.toString()));*/
     }
 }
