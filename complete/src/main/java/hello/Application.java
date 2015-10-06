@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,20 @@ public class Application implements CommandLineRunner {
     public void run(String... strings) throws Exception {
 
         log.info("Creating tables");
-        log.info("=====================================================");
+
+		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+		dataSource.setUrl("jdbc:oracle:thin:@192.168.1.100:1521:orcl");
+		dataSource.setUsername("scott");
+		dataSource.setPassword("tiger");
+
+		jdbcTemplate.setDataSource(dataSource);
+        log.info("======================Test Oracle Connection==========================");
+
+		log.info("======================Query Data from Oracle Database=================");
+		jdbcTemplate.query("SELECT * FROM DEPT WHERE DEPTNO = ?", new Object[] {10}, 
+			(rs, rowNum) -> new Department(rs.getLong("DEPTNO"), rs.getString("DNAME"), rs.getString("LOC"))	
+			).forEach(department -> log.info(department.toString()));
 
         /*jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE customers(" +
